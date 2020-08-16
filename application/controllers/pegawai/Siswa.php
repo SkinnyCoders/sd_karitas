@@ -236,4 +236,23 @@ class Siswa extends CI_controller
         }
     }
 
+    public function delete($id){
+        $delete = $this->db->delete('pendaftaran', ['id_siswa'=> $id]);
+
+        if ($delete) {
+            $siswa =  $this->db->delete('siswa', ['id_siswa'=> $id]);
+            if ($siswa) {
+                $this->session->set_flashdata('msg_success', 'Selamat, data berhasil dihapus');
+                http_response_code(200);
+            }else{
+                $this->session->set_flashdata('msg_failed', 'Selamat, data gagal dihapus');
+                http_response_code(404);
+            }
+           
+        }else{
+            $this->session->set_flashdata('msg_failed', 'Selamat, data gagal dihapus');
+            http_response_code(404);
+        }
+    }
+
 }

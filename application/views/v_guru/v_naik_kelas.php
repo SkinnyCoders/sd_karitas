@@ -85,20 +85,28 @@
                                         }
 
                                         if($s['rata'] !== false){
+                                          if ($s['naik_tidak']) {
                                             $label = '<label class="btn btn-sm btn-success">Nilai Mencukupi</label>';
                                             $disable = '';
+                                            $v = true;
+                                          }else{
+                                            $label = '<label class="btn btn-sm btn-danger">Nilai Dibawah</label>';
+                                            $disable = '';
+                                            $v = false;
+                                          }
                                         }else{
                                             $label = '<label class="btn btn-sm btn-warning">Nilai Masih Kurang</label>';
                                             $disable = 'disabled';
                                         }
                                  ?>
                                 <tr>
-                                  <td><input type="checkbox" class="form-control" name="naik[]" id="siswa<?=$no?>" value="<?=$s['id_siswa']?>" style="width: 20px;" <?=$disable?>></td>
+                                  <td><input type="checkbox" class="form-control" name="naik[]" id="siswa<?=$no?>" value="<?=$s['id_siswa']?>" style="width: 20px;" <?=$disable?>>
+                                    <input type="hidden" name="naik_tidak[]" value="<?=$v?>">
+                                  </td>
                                   <td><?=ucwords($s['nama'])?></td>
                                   <td><?=$s['nisn']?></td>
                                   <td><?=$gender?></td>
                                   <td><?=$label?></td>
-                                  
                                 </tr>
                                 <?php
                                 endforeach;

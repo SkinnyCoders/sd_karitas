@@ -59,10 +59,13 @@
           <!-- general form elements -->
           <?php
           $flag = 1;
+          array_unique($kelas);
           foreach($kelas AS $k) :
             $nisn = $this->uri->segment(4);
-            $getNilai = $this->db->query("SELECT * FROM `nilai` JOIN mata_pelajaran ON mata_pelajaran.kode_mapel=nilai.kode_mapel WHERE `id_siswa` = $nisn  AND `id_kelas` = $k")->result_array();
+            $id_tahun_ajaran = getIdTahun(getTahun());
+            $getNilai = $this->db->query("SELECT * FROM `nilai` JOIN mata_pelajaran ON mata_pelajaran.kode_mapel=nilai.kode_mapel WHERE `id_siswa` = $nisn  AND `id_kelas` = $k AND id_tahun_ajaran = $id_tahun_ajaran")->result_array();
             $namaKelas = $this->db->get_where('kelas', ['id_kelas' => $k])->row_array();
+
          ?>
           <div class="card card-default ">
           <div class="card-header">

@@ -46,6 +46,7 @@ class Naik_kelas extends CI_controller
         }else{
             $nisn = $this->input->post('naik');
             $kelas = $this->input->post('kelas');
+            $naik_tidak = $this->input->post('naik_tidak');
             $flag = true;
 
             if(!empty($nisn)){
@@ -54,9 +55,13 @@ class Naik_kelas extends CI_controller
                     $kelas_lama = $this->db->get_where('siswa', ['id_siswa' => $nisn[$i]])->row_array();
                     $kelas_lama = $kelas_lama['id_kelas'];
 
-                    //kelas baru
-                    $kelas_baru = $this->db->query("SELECT * FROM `kelas` WHERE `id_kelas` > $kelas_lama LIMIT 1")->row_array();
-                    $kelas_baru = $kelas_baru['id_kelas'];
+                    if ($naik_tidak[$i]) {
+                        //kelas baru
+                        $kelas_baru = $this->db->query("SELECT * FROM `kelas` WHERE `id_kelas` > $kelas_lama LIMIT 1")->row_array();
+                        $kelas_baru = $kelas_baru['id_kelas'];
+                    }else{
+                        $kelas_baru = $kelas_lama;
+                    }
 
                     //insert ke riwayat kelas
                     $data_riwayat = [

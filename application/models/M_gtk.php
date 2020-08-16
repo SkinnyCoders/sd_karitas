@@ -45,7 +45,7 @@ class M_gtk extends CI_Model
             $kelas = array_push($kelas_sekarang, $kelas_riwayat);
         }
 
-        return array_filter($kelas);
+        return array_unique($kelas);
     }
 
     public function DashboardGuru(){
@@ -81,21 +81,46 @@ class M_gtk extends CI_Model
     
     public function getSiswaNaikKelas($kelas){
         $siswa = $this->db->query("SELECT * FROM `siswa` JOIN pendaftaran ON pendaftaran.id_siswa=siswa.id_siswa WHERE `id_kelas` = $kelas AND pendaftaran.status='terima'")->result_array();
+        $id_tahun = getIdTahun(getTahun());
 
         if(!empty($siswa)){
             foreach($siswa AS $s){
                 //get mapel kelas
                 $mapel_kelas = $this->db->get_where("mapel_kelas", ['id_kelas' => $kelas])->result_array();
 
+                $jumlah_nilai_dibawah = 0;
                 foreach($mapel_kelas AS $malas){
                     //hitung rata - rata
                     $kode = $malas['kode_mapel'];
+                    //get nilai kkm
+                    $nilai_kkm = $this->db->query("SELECT `kkm` FROM `kkm_mapel` WHERE `kode_mapel` = '$kode' AND `id_tahun_pelajaran` = $id_tahun")->row_array();
+                    if ($nilai_kkm == null) {
+                        $this->session->set_flashdata('msg_failed', 'Harap lengkapi KKM');
+                        redirect($_SERVER['HTTP_REFERER']);
+                    }
+                   
+
                     $nilai_total = $this->db->query("SELECT `nilai_total` FROM `nilai` WHERE `id_kelas` = $kelas AND `kode_mapel` = '$kode' AND id_siswa =".$s['id_siswa'])->row_array();
+
+                    
                     if(!empty($nilai_total)){
                         $nilai_total = $nilai_total['nilai_total'];
+
+                        if ($nilai_total < $nilai_kkm['kkm']) {
+                            $jumlah_nilai_dibawah++;
+                        }
+
                     }else{
                         $nilai_total = false;
                     }
+                }
+
+                $batas_naik_tidak = count($mapel_kelas)*0.3;
+
+                if ($jumlah_nilai_dibawah > $batas_naik_tidak) {
+                    $naik_tidak = false;
+                }else{
+                    $naik_tidak = true;
                 }
 
                 $data[] = [
@@ -103,7 +128,8 @@ class M_gtk extends CI_Model
                     'nisn' => $s['nisn'],
                     'id_siswa' => $s['id_siswa'],
                     'kelamin' => $s['jenis_kelamin'],
-                    'rata' => $nilai_total
+                    'rata' => $nilai_total,
+                    'naik_tidak' => $naik_tidak
                 ];
             }
         }else{

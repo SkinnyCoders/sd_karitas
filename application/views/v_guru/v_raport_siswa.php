@@ -111,9 +111,10 @@ if($cek_naik > 0){
           <tr>
             <th style="width: 3%">No</th>
             <th>Mata Pelajaran</th>
-            <th>KKM</th>
-            <th>Nilai Siswa</th>
-            <th>Nilai Sikap</th>
+            <th style="width: 10%">KKM</th>
+            <th style="width: 10%">Nilai Siswa</th>
+            <th style="width: 10%">Nilai Sikap</th>
+            <th style="width: 40%">Keterangan</th>
           </tr>
         </thead>
         <tbody>
@@ -123,7 +124,7 @@ if($cek_naik > 0){
           foreach($mapel AS $m):
             //get nilai
             $kode = $m['kode_mapel'];
-            $nilai = $this->db->query("SELECT `nilai_total`, nilai_sikap FROM `nilai` WHERE `id_siswa` = ".$siswa['id_siswa']." AND `id_kelas` = ".$kelas_ampas['id_kelas']." AND `kode_mapel` = '$kode'")->row_array();
+            $nilai = $this->db->query("SELECT `nilai_total`, nilai_sikap, keterangan FROM `nilai` WHERE `id_siswa` = ".$siswa['id_siswa']." AND `id_kelas` = ".$kelas_ampas['id_kelas']." AND `kode_mapel` = '$kode'")->row_array();
             if(!empty($nilai)){
               $total = $nilai['nilai_total'];
             }else{
@@ -149,6 +150,7 @@ if($cek_naik > 0){
             <td><?=$kkm_nilai?></td>
             <td><?=$total?></td>
             <td><?=!empty($nilai['nilai_sikap'])?$nilai['nilai_sikap']:'-'?></td>
+            <td><?=!empty($nilai['keterangan'])?$nilai['keterangan']:'-'?></td>
           </tr>
           
           <?php
@@ -157,7 +159,7 @@ if($cek_naik > 0){
           <tr>
             <td></td>
             <td>Rata - Rata Nilai Siswa</td>
-            <td colspan="3"><?=$rata2?></td>
+            <td colspan="4"><?=$rata2?></td>
           </tr>
         </tbody>   
       </table>

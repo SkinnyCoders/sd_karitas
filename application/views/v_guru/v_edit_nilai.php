@@ -72,6 +72,7 @@
                     <th class="text-nowrap" style="width: 15%">Nilai UTS</th>
                     <th class="text-nowrap" style="width: 15%">Nilai UAS</th>
                     <th class="text-nowrap" style="width: 15%">Nilai Sikap</th>
+                    <th class="text-nowrap" style="width: 10%">Keterangan</th>
                   </tr>
                 </thead>
                 
@@ -99,7 +100,39 @@
                           <option value="D" <?php if($m['nilai_sikap'] == 'D'){ echo 'selected'; }?>>D</option>
                         </select>  
                         </td>
+                         <td><a href="javascript:void(0)" data-toggle="modal" data-target="#modal-add<?=$no?>" class="btn btn-sm btn-primary">Keterangan</a></td>
                     </tr>
+
+                    <!-- modal tambah -->
+                    <div class="modal fade" id="modal-add<?=$no++?>">
+                     <div class="modal-dialog modal-lg">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <h4 class="modal-title">Tambah Keterangan <?=$m['nama_mapel']?></h4>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span>
+                           </button>
+                         </div>
+                         <div class="modal-body">
+                               <!-- form start -->
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                  <label for="kelas">Keterangan</label>
+                                  <textarea class="form-control" style="width: 100%; height: 200px;" name="keterangan[]" placeholder="Masukkan Keterangan"><?=$m['keterangan'] ?></textarea>
+                                  <small class="text-danger mt-2"><?= form_error('mapel') ?></small>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /.card-body -->
+                       </div>
+                       <!-- /.modal-content -->
+                     </div>
+                     <!-- /.modal-dialog -->
+                   </div>
+                   <!-- /.modal -->
+
                         <?php endforeach;?>
                     
                 </tbody>

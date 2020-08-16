@@ -45,10 +45,10 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label >Status GTK</label>
-                                <select name="status" id="status" class="form-control select2bs4" data-placeholder="Pilih Status GTK" disabled>
+                                <select name="status" id="status" class="form-control select2bs4" data-placeholder="Pilih Status GTK">
                                     <option></option>
                                     <option value="guru" <?php if($gtk['hak_akses'] == 'guru'){echo 'selected';} ?>>Guru</option>
-                                    <option value="pegawai" <?php if($gtk['hak_akses'] == 'pegawai'){echo 'selected';} ?>>Pegawai</option>
+                                    <option value="wali kelas" <?php if($gtk['hak_akses'] == 'wali kelas'){echo 'selected';} ?>>Wali Kelas</option>
                                 </select>
                                 <small class="text-danger mt-2"><?= form_error('status') ?></small>
                             </div>

@@ -159,6 +159,7 @@
               </p>
             </a>
           </li>
+          <?php if($role == 'Wali Kelas') :?>
           <li class="nav-item">
             <a href="<?= base_url('guru/siswa') ?>" class="nav-link <?= active('siswa')?>">
               <i class="nav-icon fa fa-users"></i>
@@ -167,6 +168,7 @@
               </p>
             </a>
           </li>
+        <?php endif;?>
           <li class="nav-item">
             <a href="<?= base_url('guru/nilai') ?>" class="nav-link <?= active('nilai')?>">
               <i class="nav-icon fa fa-check"></i>

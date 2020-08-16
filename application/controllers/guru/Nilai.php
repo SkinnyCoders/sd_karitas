@@ -42,7 +42,7 @@ class Nilai extends CI_controller
         $nip = $this->session->userdata('username');
         $data['title'] = 'Input Nilai Siswa';
         $data['siswa'] = $this->db->query("SELECT * FROM `siswa` JOIN kelas ON kelas.id_kelas=siswa.id_kelas WHERE siswa.id_siswa = $id_siswa")->row_array();
-        $data['mapel'] = $this->db->query("SELECT * FROM guru_mengajar JOIN tenaga_kependidikan AS gtk ON gtk.id_tenaga_kependidikan=guru_mengajar.id_guru JOIN kelas ON kelas.id_kelas=guru_mengajar.id_kelas JOIN mata_pelajaran AS mapel ON mapel.kode_mapel=guru_mengajar.kode_mapel WHERE gtk.nip = $nip AND kelas.id_kelas = ".$data['siswa']['id_kelas'])->result_array();
+        $data['mapel'] = $this->db->query("SELECT * FROM guru_mengajar JOIN tenaga_kependidikan AS gtk ON gtk.id_tenaga_kependidikan=guru_mengajar.id_guru JOIN kelas ON kelas.id_kelas=guru_mengajar.id_kelas JOIN mata_pelajaran AS mapel ON mapel.kode_mapel=guru_mengajar.kode_mapel JOIN mapel_kelas ON mapel_kelas.kode_mapel=guru_mengajar.kode_mapel WHERE gtk.nip = $nip AND kelas.id_kelas = ".$data['siswa']['id_kelas'])->result_array();
 
         //$data['mapel'] = $this->db->query("SELECT * FROM `mapel_kelas` JOIN mata_pelajaran ON mata_pelajaran.kode_mapel=mapel_kelas.kode_mapel WHERE mapel_kelas.id_kelas = ".$data['siswa']['id_kelas'])->result_array();
 
@@ -62,9 +62,16 @@ class Nilai extends CI_controller
                 $uts   = $_POST['uts'][$i];
                 $uas   = $_POST['uas'][$i];
                 $sikap = $_POST['sikap'][$i];
+                $keterangan = $_POST['keterangan'][$i];
 
                 if($sikap == ''){
                     $this->session->set_flashdata('msg_failed', 'Maaf, Nilai sikap tidak boleh kosong');
+                    http_response_code(500);
+                    return false;
+                }
+
+                if($keterangan == ''){
+                    $this->session->set_flashdata('msg_failed', 'Maaf, keterangan tidak boleh kosong');
                     http_response_code(500);
                     return false;
                 }
@@ -112,7 +119,8 @@ class Nilai extends CI_controller
                     'nilai_uts' => $uts,
                     'nilai_uas' => $uas,
                     'nilai_total' => $TotalNilai,
-                    'nilai_sikap' => $sikap
+                    'nilai_sikap' => $sikap,
+                    'keterangan' => $keterangan
                 ];
 
                 $insertNilai = $this->db->insert('nilai', $data);
@@ -174,12 +182,13 @@ class Nilai extends CI_controller
     }
 
     public function edit($id_siswa){
+        $nip = $this->session->userdata('username');
         $data = [
             'title' => 'Perbarui Nilai',
             'siswa' => $this->db->query("SELECT * FROM `siswa` JOIN kelas ON kelas.id_kelas=siswa.id_kelas WHERE siswa.id_siswa = $id_siswa")->row_array(),
         ];
 
-        $data['mapel'] = $this->db->query("SELECT * FROM nilai JOIN mata_pelajaran ON mata_pelajaran.kode_mapel=nilai.kode_mapel WHERE nilai.id_kelas = ".$data['siswa']['id_kelas']." AND nilai.id_siswa = ".$data['siswa']['id_siswa'])->result_array();
+        $data['mapel'] = $this->db->query("SELECT * FROM nilai JOIN mata_pelajaran ON mata_pelajaran.kode_mapel=nilai.kode_mapel JOIN guru_mengajar ON guru_mengajar.kode_mapel=mata_pelajaran.kode_mapel JOIN tenaga_kependidikan AS gtk ON gtk.id_tenaga_kependidikan=guru_mengajar.id_guru JOIN kelas ON kelas.id_kelas=guru_mengajar.id_kelas WHERE kelas.id_kelas = ".$data['siswa']['id_kelas']." AND gtk.nip = $nip AND nilai.id_siswa = ".$data['siswa']['id_siswa'])->result_array();
 
         $this->form_validation->set_rules('nisn', 'NISN', 'required|trim', ['required' => '{field} tidak boleh kosong']);
        // $this->form_validation->set_rules('tugas', 'NISN', 'required|trim', ['required' => '{field} tidak boleh kosong']);
@@ -200,9 +209,16 @@ class Nilai extends CI_controller
                     $uts   = $_POST['uts'][$i];
                     $uas   = $_POST['uas'][$i];
                     $sikap = $_POST['sikap'][$i];
+                    $keterangan = $_POST['keterangan'][$i];
 
                     if($sikap == ''){
                         $this->session->set_flashdata('msg_failed', 'Maaf, Nilai sikap tidak boleh kosong');
+                        http_response_code(500);
+                        return false;
+                    }
+
+                    if($keterangan == ''){
+                        $this->session->set_flashdata('msg_failed', 'Maaf, keterangan tidak boleh kosong');
                         http_response_code(500);
                         return false;
                     }
@@ -250,7 +266,8 @@ class Nilai extends CI_controller
                         'nilai_uts' => $uts,
                         'nilai_uas' => $uas,
                         'nilai_total' => $TotalNilai,
-                        'nilai_sikap' => $sikap
+                        'nilai_sikap' => $sikap,
+                        'keterangan' => $keterangan
                     ];
 
                     $insertNilai = $this->db->insert('nilai', $data);

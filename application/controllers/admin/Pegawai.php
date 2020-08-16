@@ -30,8 +30,8 @@ class Pegawai extends CI_controller
         ];
 
     	$this->form_validation->set_rules('nama', 'Nama Lengkap', 'required|trim|callback_cekHuruf', ['required' => 'Nama tidak boleh kosong', 'cekHuruf' => '{field} hanya berupa huruf']);
-        $this->form_validation->set_rules('nip', 'NIP', 'trim|numeric|callback_CekNIP', ['numeric' => '{field} harus berupa angka', 'CekNIP' => '{field} sudah digunakan']);
-        $this->form_validation->set_rules('nik', 'NIK', 'trim|numeric|callback_CekNIK', ['numeric' => '{field} harus berupa angka', 'CekNIK' => '{field} sudah digunakan']);
+        $this->form_validation->set_rules('nip', 'NIP', 'required|trim|numeric|callback_CekNIP', ['numeric' => '{field} harus berupa angka', 'CekNIP' => '{field} sudah digunakan']);
+        $this->form_validation->set_rules('nik', 'NIK', 'required|trim|numeric|callback_CekNIK', ['numeric' => '{field} harus berupa angka', 'CekNIK' => '{field} sudah digunakan']);
         $this->form_validation->set_rules('telp', 'No Telp', 'numeric|trim', ['numeric' => '{field} harus berupa angka']);
       //  $this->form_validation->set_rules('status', 'Status GTK', 'required|trim', ['required' => '{field} tidak boleh kosong']);
         $this->form_validation->set_rules('gender', 'Jenis Kelamin', 'required|trim', ['required' => '{field} tidak boleh kosong']);
@@ -93,8 +93,8 @@ class Pegawai extends CI_controller
             ];
             
             $this->form_validation->set_rules('nama', 'Nama Lengkap', 'required|trim|callback_cekHuruf', ['required' => 'Nama tidak boleh kosong', 'cekHuruf' => '{field} hanya berupa huruf']);
-            $this->form_validation->set_rules('nip', 'NIP', 'trim|numeric', ['numeric' => '{field} harus berupa angka', 'CekNIP' => '{field} sudah digunakan']);
-            $this->form_validation->set_rules('nik', 'NIK', 'trim|numeric', ['numeric' => '{field} harus berupa angka', 'CekNIK' => '{field} sudah digunakan']);
+            $this->form_validation->set_rules('nip', 'NIP', 'required|trim|numeric', ['numeric' => '{field} harus berupa angka', 'CekNIP' => '{field} sudah digunakan']);
+            $this->form_validation->set_rules('nik', 'NIK', 'required|trim|numeric', ['numeric' => '{field} harus berupa angka', 'CekNIK' => '{field} sudah digunakan']);
             $this->form_validation->set_rules('telp', 'No Telp', 'numeric|trim', ['numeric' => '{field} harus berupa angka']);
           //  $this->form_validation->set_rules('status', 'Status GTK', 'required|trim', ['required' => '{field} tidak boleh kosong']);
             $this->form_validation->set_rules('gender', 'Jenis Kelamin', 'required|trim', ['required' => '{field} tidak boleh kosong']);

@@ -151,6 +151,8 @@
                       </td>
                       <td><a href="javascript:void(0)" data-toggle="modal" data-target="#modal-detail" id="<?=$s['id_siswa']?>" class="btn btn-sm btn-primary mr-1 detail"><i class="fa fa-eye"></i> Detail</a>
                       <a href="<?= base_url('pegawai/siswa/edit/'.$s['id_siswa']) ?>" target="_blank" id="" class="btn btn-sm btn-success mr-1 update"><i class="fa fa-edit"></i></a>
+
+                      <a href="javascript:void(0)" target="_blank" id="<?=$s['id_siswa']?>" class="btn btn-sm btn-danger mr-1 delete"><i class="fa fa-trash"></i></a>
                       </td>
                     </tr>
                   <?php
@@ -504,5 +506,38 @@
             swal("Cancelled", "Your imaginary file is safe :)", "error");
             }
         });
-    })
+    });
+
+    $('.delete').on('click', function(e) {
+     e.preventDefault();
+     var dataId = this.id;
+     Swal.fire({
+       title: 'Hapus Data Siswa',
+       text: "Apakah anda yakin ingin menghapus data siswa?",
+       type: "warning",
+       showCancelButton: true,
+       confirmButtonColor: '#3085d6',
+       cancelButtonColor: '#d33',
+       confirmButtonText: 'Ya, Hapus!'
+     }).then(
+       function(isConfirm) {
+         if (isConfirm.value) {
+           $.ajax({
+             type: "post",
+             url: "<?= base_url() ?>pegawai/siswa/delete/" + dataId,
+             data: {
+               'id_kelas': dataId
+             },
+             success: function(respone) {
+               window.location.href = "<?= base_url('pegawai/siswa') ?>";
+             },
+             error: function(request, error) {
+               window.location.href = "<?= base_url('pegawai/siswa') ?>";
+             },
+           });
+         } else {
+           swal("Cancelled", "Your imaginary file is safe :)", "error");
+         }
+       });
+   });
 </script>

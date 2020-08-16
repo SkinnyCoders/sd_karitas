@@ -72,6 +72,7 @@
                     <th class="text-nowrap" style="width: 15%">Nilai UTS</th>
                     <th class="text-nowrap" style="width: 15%">Nilai UAS</th>
                     <th class="text-nowrap" style="width: 15%">Nilai Sikap</th>
+                    <th class="text-nowrap" style="width: 10%">Keterangan</th>
                   </tr>
                 </thead>
                 
@@ -85,21 +86,53 @@
                     ?>
                     <input type="hidden" name="kode_mapel[]" value="<?=$m['kode_mapel']?>">
                     <tr>
-                        <td><?=$no++?></td>
+                        <td><?=$no?></td>
                         <td><?=ucwords($m['nama_mapel'])?></td>
                         <td><input type="text" name="tugas[]" class="form-control" placeholder="Nilai Tugas" required><small style="color: red;"><?php echo form_error("tugas[]")?></small></td>
                         <td><input type="text" name="uts[]" class="form-control" placeholder="Nilai UTS" required></td>
                         <td><input type="text" name="uas[]" class="form-control" placeholder="Nilai UAS" required></td>
                         <td>
-                        <select name="sikap[]" class="form-control select2bs4" data-placeholder="pilih nilai sikap" id="sikap">
-                          <option></option>
+                        <select name="sikap[]" class="form-control" data-placeholder="pilih nilai sikap" id="sikap">
+                          <option value="">Pilih Nilai Sikap</option>
                           <option value="A">A</option>
                           <option value="B">B</option>
                           <option value="C">C</option>
                           <option value="D">D</option>
                         </select>  
                         </td>
+                        <td><a href="javascript:void(0)" data-toggle="modal" data-target="#modal-add<?=$no?>" class="btn btn-sm btn-primary">Keterangan</a></td>
                     </tr>
+
+                    <!-- modal tambah -->
+                    <div class="modal fade" id="modal-add<?=$no++?>">
+                     <div class="modal-dialog modal-lg">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <h4 class="modal-title">Tambah Keterangan <?=$m['nama_mapel']?></h4>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span>
+                           </button>
+                         </div>
+                         <div class="modal-body">
+                               <!-- form start -->
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                  <label for="kelas">Keterangan</label>
+                                  <textarea class="form-control" style="width: 100%; height: 200px;" name="keterangan[]" placeholder="Masukkan Keterangan"></textarea>
+                                  <small class="text-danger mt-2"><?= form_error('mapel') ?></small>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /.card-body -->
+                       </div>
+                       <!-- /.modal-content -->
+                     </div>
+                     <!-- /.modal-dialog -->
+                   </div>
+                   <!-- /.modal -->
+
                         <?php endforeach;?>
                     
                 </tbody>
@@ -117,6 +150,7 @@
                     </div>
                     <small class="text-muted"><span style="color:red">*</span> pilih untuk naik kelas, biarkan kosong untuk tinggal kelas</small> -->
                 </div>
+                
                 <div class="col-md-6">
                     <button type="submit" id="simpan" class="btn btn-primary float-right">Simpan Penilain Siswa</button>
                     </form>
